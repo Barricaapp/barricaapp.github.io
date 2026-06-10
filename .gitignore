@@ -1,0 +1,6 @@
+# raw screenshots (originals stay local; optimized copies go to assets/)
+assets/raw/
+# OS junk
+Thumbs.db
+.DS_Store
+desktop.ini
