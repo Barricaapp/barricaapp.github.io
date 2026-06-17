@@ -1,5 +1,11 @@
 # raw screenshots (originals stay local; optimized copies go to assets/)
 assets/raw/
+# source imagery from Gemini/Higgsfield (originals stay local; optimized copies go to assets/)
+imagens/
+# local render previews
+.preview/
+# local tooling binaries (ffmpeg etc; never publish)
+.tools/
 # OS junk
 Thumbs.db
 .DS_Store

@@ -18,16 +18,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
 
-  <!-- ===== 1. HERO ===== -->
-  <header class="hero">
-    <div class="hero-text">
+  <!-- ========================================================= -->
+  <!-- ATO I — HERO (cena: campo / canavial, vídeo)              -->
+  <!-- ========================================================= -->
+  <header class="cinema hero" data-cinema
+          style="--poster-l:url('assets/campo.jpg'); --poster-p:url('assets/campo-9x16.jpg')"
+          data-poster-l="assets/campo.jpg"      data-poster-p="assets/campo-9x16.jpg"
+          data-video-l="assets/campo.mp4"
+          data-video-p="assets/campo-9x16.mp4">
+    <div class="cinema-media"></div>
+    <div class="cinema-scrim scrim-bottom"></div>
+    <div class="cinema-content hero-content">
       <p class="eyebrow">Barrica</p>
       <h1>O Diário Social<br>da Cachaça</h1>
       <p class="lead">Registre cada degustação e descubra a procedência: produtor, município, madeira, envelhecimento. Compartilhe com quem entende. Cachaça de alambique merece memória.</p>
-      <p class="store-badge">Em breve no Google Play e na App Store</p>
 
       <!-- PHASE: waitlist (active) -->
       <a class="cta" href="#lista">Entrar na lista de espera</a>
@@ -37,53 +45,105 @@
       <a class="cta" href="URL_PLAY_STORE">Baixar no Google Play</a>
       -->
     </div>
-    <div class="phone glow">
-      <img src="assets/explorar.jpg" alt="Tela Explorar do Barrica: catálogo de cachaças com fotos de rótulo, produtores e madeiras" width="414" height="896">
-    </div>
+    <span class="scroll-cue" aria-hidden="true"></span>
   </header>
 
-  <div class="hoop" role="presentation"></div>
+  <!-- ========================================================= -->
+  <!-- ATO II — A TESE (por que o Barrica existe)                -->
+  <!-- ========================================================= -->
 
-  <!-- ===== 2. FEATURE: REGISTRE ===== -->
-  <section class="feature">
-    <div class="phone">
-      <img src="assets/checkin.jpg" alt="Tela de check-in do Barrica: avaliação em barris e perfil sensorial de uma degustação" width="414" height="896">
-    </div>
-    <div class="feature-text">
-      <h2>Cada gole vira registro</h2>
-      <p>Foto, nota em barris em vez de estrelas, e o perfil sensorial do que você provou. Seu diário de degustação, sempre à mão.</p>
-    </div>
-  </section>
-
-  <div class="hoop" role="presentation"></div>
-
-  <!-- ===== 3. FEATURE: DESCUBRA ===== -->
-  <section class="feature reverse">
-    <div class="phone">
-      <img src="assets/produto.jpg" alt="Ficha de produto no Barrica: produtor, município, madeira e tempo de envelhecimento" width="414" height="896">
-    </div>
-    <div class="feature-text">
-      <h2>De onde ela vem</h2>
-      <p>Produtor, município, madeira de envelhecimento, tempo de descanso, subcategoria. A ficha completa de cada cachaça, sem precisar pesquisar fora.</p>
+  <!-- Beat 1: caráter próprio — cena alambique (vídeo), hook da tese -->
+  <section class="cinema aside-left" data-cinema
+           style="--poster-l:url('assets/alambique.jpg'); --poster-p:url('assets/alambique-9x16.jpg')"
+           data-poster-l="assets/alambique.jpg" data-poster-p="assets/alambique-9x16.jpg"
+           data-video-l="assets/alambique.mp4"
+           data-video-p="assets/alambique-9x16.mp4">
+    <div class="cinema-media"></div>
+    <div class="cinema-scrim"></div>
+    <div class="cinema-content">
+      <p class="hook">Nenhuma cachaça é igual a outra. A terra de onde vem, a madeira onde dormiu, a mão que destilou: tudo isso vira sabor.</p>
     </div>
   </section>
 
-  <div class="hoop" role="presentation"></div>
-
-  <!-- ===== 4. FEATURE: COMPARTILHE ===== -->
-  <section class="feature">
-    <div class="phone">
-      <img src="assets/feed.jpg" alt="Feed social do Barrica: degustações de amigos e confrarias" width="414" height="896">
-    </div>
-    <div class="feature-text">
-      <h2>Sua confraria, no bolso</h2>
-      <p>Siga amigos, veja o que estão provando por perto e organize sua confraria: listas, conquistas e o feed de quem divide a garrafa com você.</p>
+  <!-- Beats 2+3 FUNDIDOS: o copo esvazia conforme o scroll.
+       Camada cheia embaixo, vazia revelada por --empty (0->1, via script.js).
+       Os dois hooks (apreciador -> lacuna) cruzam junto com o líquido.
+       Piso sem JS: copo cheio + primeiro hook (estado completo e legível). -->
+  <section class="glass-scene" id="copo">
+    <div class="glass-sticky">
+      <div class="glass-layer glass-full"
+           style="--img-l:url('assets/copo.jpg'); --img-p:url('assets/copo-9x16.jpg')"></div>
+      <div class="glass-layer glass-empty"
+           style="--img-l:url('assets/copo-vazio.jpg'); --img-p:url('assets/copo-vazio-9x16.jpg')"></div>
+      <div class="cinema-scrim"></div>
+      <div class="cinema-content">
+        <p class="hook hook-full">Quem prova de verdade quer lembrar, entender, comparar.</p>
+        <p class="hook hook-empty">Aquela que te marcou: qual era o nome? De que município? Quanto tempo de barril? Cachaça boa se esquece fácil quando não há onde guardar.</p>
+      </div>
     </div>
   </section>
 
-  <div class="hoop" role="presentation"></div>
+  <!-- ========================================================= -->
+  <!-- TRANSIÇÃO — a primeira tela surge, a virada                -->
+  <!-- ========================================================= -->
+  <section class="transition">
+    <p class="turn">É por isso que o Barrica existe.</p>
+    <div class="phone-pair">
+      <div class="phone glow">
+        <img src="assets/checkin.jpg" alt="Tela do Barrica: degustação da Reserva Especial com nota e perfil sensorial" width="412" height="896" loading="lazy">
+      </div>
+      <div class="phone glow">
+        <img src="assets/perfil.jpg" alt="Tela de perfil no Barrica: goles, cachaças provadas e distribuição de notas" width="412" height="896" loading="lazy">
+      </div>
+    </div>
+  </section>
 
-  <!-- ===== 5. CTA REPETIDO / WAITLIST ===== -->
+  <!-- ========================================================= -->
+  <!-- ATO III — O APP (corte seco, fundo limpo e sóbrio)        -->
+  <!-- ========================================================= -->
+  <section class="app">
+
+    <div class="app-feature">
+      <div class="phone">
+        <img src="assets/degust.jpg" alt="Tela Novo Gole do Barrica: registrar uma degustação com nota, madeira e notas sensoriais" width="412" height="896" loading="lazy">
+      </div>
+      <div class="app-text">
+        <h2>Registre</h2>
+        <p>Foto, nota em barris em vez de estrelas, e o perfil sensorial do que você provou. Seu diário de degustação, sempre à mão.</p>
+      </div>
+    </div>
+
+    <div class="app-feature reverse">
+      <div class="phone">
+        <img src="assets/produto.jpg" alt="Ficha de produto no Barrica: produtor, município, madeira e tempo de envelhecimento" width="414" height="896" loading="lazy">
+      </div>
+      <div class="app-text">
+        <h2>Descubra</h2>
+        <p>Produtor, município, madeira de envelhecimento, tempo de descanso, subcategoria. A ficha completa de cada cachaça, sem precisar pesquisar fora.</p>
+      </div>
+    </div>
+
+    <div class="app-feature">
+      <div class="phone">
+        <img src="assets/feed.jpg" alt="Feed social do Barrica: degustações de amigos e confrarias" width="414" height="896" loading="lazy">
+      </div>
+      <div class="app-text">
+        <h2>Compartilhe</h2>
+        <p>Siga amigos, veja o que estão provando por perto e organize sua confraria: listas, conquistas e o feed de quem divide a garrafa com você.</p>
+        <p class="badge-note">Cada descoberta rende um selo. Monte sua estante de explorador.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- ATO IV+V — BLOCO FINAL sobre o barril (fecha campo->barril) -->
+  <!-- ========================================================= -->
+  <div class="finale">
+  <div class="finale-media"></div>
+  <div class="finale-scrim"></div>
+
+  <!-- ATO IV — WAITLIST -->
   <section class="waitlist" id="lista">
     <h2>Seja avisado no lançamento</h2>
 
@@ -91,6 +151,7 @@
     <iframe src="https://tally.so/embed/EkaKOB?transparentBackground=1&hideTitle=1"
             title="Formulário de lista de espera do Barrica"
             loading="lazy" width="100%" height="250" frameborder="0"></iframe>
+    <p class="founder-note">Quem entra agora recebe o selo de explorador fundador.</p>
     <p class="privacy-note">Usamos seu e-mail apenas para avisar do lançamento. Sem spam.
       <a href="https://ciberagresco.github.io/barrica-legal/privacy.html">Política de Privacidade</a></p>
     <!-- /PHASE: waitlist -->
@@ -100,16 +161,25 @@
     -->
   </section>
 
-  <div class="hoop" role="presentation"></div>
-
-  <!-- ===== 6. INSTITUCIONAL ===== -->
+  <!-- ========================================================= -->
+  <!-- ATO V — INSTITUCIONAL + RODAPÉ                             -->
+  <!-- ========================================================= -->
   <section class="institutional">
     <h2>Para laboratórios, curadores e instituições</h2>
     <p>O Barrica nasce com dados de procedência verificada, sempre com a fonte citada. Se a sua instituição analisa, certifica ou premia cachaças de alambique, vamos conversar: <a href="mailto:barricaapp@gmail.com">barricaapp@gmail.com</a></p>
   </section>
 
-  <!-- ===== 7. RODAPÉ ===== -->
   <footer>
+    <p class="social">
+      <a href="https://instagram.com/barrica.app" aria-label="Barrica no Instagram" rel="noopener" target="_blank">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5.5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        @barrica.app
+      </a>
+    </p>
     <nav>
       <a href="https://ciberagresco.github.io/barrica-legal/privacy.html">Política de Privacidade</a>
       <span aria-hidden="true">·</span>
@@ -120,6 +190,8 @@
     <p class="legal-notice">Beba com moderação. Venda e consumo proibidos para menores de 18 anos.</p>
     <p class="copyright">© 2026 Barrica · O Diário Social da Cachaça</p>
   </footer>
+
+  </div><!-- /.finale -->
 
 </body>
 </html>

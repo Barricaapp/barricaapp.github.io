@@ -14,13 +14,10 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
 body {
-  /* wood grain: layered repeating gradients, no image assets */
-  background:
-    repeating-linear-gradient(92deg,
-      rgba(58, 32, 16, .22) 0 2px, transparent 2px 7px,
-      rgba(58, 32, 16, .11) 7px 9px, transparent 9px 22px),
-    var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 1.125rem;
@@ -28,32 +25,149 @@ body {
 }
 
 h1, h2 { font-family: var(--font-title); font-weight: 600; }
-
 a { color: var(--primary); }
 
-/* --- hero --- */
-.hero {
-  display: flex; align-items: center; gap: 3rem;
-  max-width: 960px; margin: 0 auto; padding: 5rem 1.5rem 4rem;
+/* ============================================================ */
+/* CINEMA — seções de tela cheia (vídeo ou still Ken Burns)     */
+/* ============================================================ */
+.cinema {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2rem 1.5rem;
 }
-.hero-text { flex: 1; }
+
+/* camada de mídia: poster por baixo, vídeo injetado por cima (JS) */
+.cinema-media {
+  position: absolute; inset: 0;
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  /* poster art-directed: paisagem por padrão, retrato no mobile.
+     --poster-l / --poster-p são preenchidos via JS a partir dos data-poster-* */
+  background-image: var(--poster-l, none);
+  z-index: 0;
+}
+.cinema-media video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* Cena do copo que esvazia no scroll (funde os antigos beats 2 e 3).
+   --empty (0..1) é setado pelo script.js a partir do progresso do scroll;
+   sem JS, fica no piso: copo cheio + primeiro hook. */
+.glass-scene { position: relative; }
+.glass-sticky {
+  position: relative; min-height: 100svh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; padding: 2rem 1.5rem;
+}
+.glass-scene.is-enhanced { height: 220vh; }
+.glass-scene.is-enhanced .glass-sticky { position: sticky; top: 0; height: 100svh; }
+
+.glass-layer {
+  position: absolute; inset: 0; z-index: 0;
+  background-position: center; background-size: cover; background-repeat: no-repeat;
+  background-image: var(--img-l);
+}
+.glass-empty { opacity: var(--empty, 0); }
+
+.glass-sticky .cinema-scrim { z-index: 1; }
+/* o copo fica no centro da cena; cada hook ocupa uma faixa lateral, sem cobri-lo:
+   cheio puxa pra esquerda, vazio pra direita. */
+.glass-sticky .cinema-content { position: absolute; inset: 0; max-width: none; z-index: 2; }
+.glass-sticky .hook {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: min(34rem, 44%); min-height: 6em;
+}
+.hook-full {
+  left: clamp(1rem, 4vw, 3.5rem); text-align: left;
+  /* texto cruza junto com o líquido: cheio some no 1º terço */
+  opacity: clamp(0, calc((0.4 - var(--empty, 0)) * 2.5), 1);
+}
+.hook-empty {
+  right: clamp(1rem, 4vw, 3.5rem); text-align: right;
+  /* vazio entra no fim */
+  opacity: clamp(0, calc((var(--empty, 0) - 0.55) * 2.5), 1);
+}
+
+/* scrim: garante legibilidade do texto sobre a imagem */
+.cinema-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(120% 80% at 50% 60%, transparent 30%, rgba(14, 7, 2, .72) 100%),
+              linear-gradient(180deg, rgba(14, 7, 2, .35) 0%, rgba(14, 7, 2, .15) 40%, rgba(14, 7, 2, .65) 100%);
+}
+.cinema-scrim.scrim-bottom {
+  background: linear-gradient(180deg, rgba(14, 7, 2, .25) 0%, transparent 35%, rgba(14, 7, 2, .85) 100%);
+}
+.cinema-scrim.scrim-soft {
+  background: linear-gradient(180deg, rgba(14, 7, 2, .35) 0%, rgba(14, 7, 2, .15) 50%, rgba(14, 7, 2, .55) 100%);
+}
+
+.cinema-content {
+  position: relative; z-index: 2;
+  max-width: 38rem; text-align: center;
+}
+
+/* hook jogado pro canto esquerdo (ex.: alambique), pra não cobrir o objeto central */
+.cinema.aside-left { justify-content: flex-start; }
+.cinema.aside-left .cinema-content {
+  text-align: left;
+  max-width: min(32rem, 42%);
+  margin-left: clamp(1rem, 4vw, 3.5rem);
+}
+
+/* hook: a frase da tese que surge no scroll */
+.hook {
+  font-family: var(--font-title); font-weight: 400;
+  font-size: clamp(1.3rem, 3.4vw, 2rem); line-height: 1.32;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, .6);
+}
+
+/* --- hero --- */
+.hero { align-items: flex-end; }
+.hero-content { padding-bottom: 4rem; max-width: 40rem; }
 .eyebrow {
+  position: relative; display: inline-block;
   font-family: var(--font-title); font-size: 1.4rem; letter-spacing: .35em;
   text-transform: uppercase;
-  /* copper-to-gold gradient: the alambique */
+  padding: .32em 1em .36em;
   background: linear-gradient(105deg, var(--primary) 30%, #e8c25c 50%, var(--copper) 75%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-h1 { font-size: 2.6rem; line-height: 1.15; margin: .75rem 0; }
-.lead { color: var(--text-sub); max-width: 34rem; }
-.store-badge {
-  font-size: .85rem; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--text-sub); margin: 1.5rem 0 1rem;
+/* selo marrom escuro da paleta atrás do nome: dá contraste sobre o céu dourado do hero */
+.eyebrow::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: rgba(58, 32, 16, .82);
+  border: 1px solid rgba(196, 154, 26, .35);
+  border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(14, 7, 2, .55);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
 }
+.hero h1 {
+  font-size: clamp(2.2rem, 7vw, 3.4rem); line-height: 1.12; margin: .75rem 0;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, .55);
+}
+.hero .lead { color: var(--text); opacity: .92; margin: 0 auto 1.75rem; max-width: 34rem; }
+
+/* scroll cue */
+.scroll-cue {
+  position: absolute; bottom: 1.5rem; left: 50%; z-index: 2;
+  width: 22px; height: 36px; transform: translateX(-50%);
+  border: 1.5px solid rgba(240, 232, 216, .55); border-radius: 12px;
+}
+.scroll-cue::before {
+  content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+  width: 3px; height: 7px; border-radius: 2px; background: var(--text);
+  animation: cue 1.8s ease-in-out infinite;
+}
+@keyframes cue { 0%, 100% { opacity: .2; transform: translate(-50%, 0); } 50% { opacity: 1; transform: translate(-50%, 8px); } }
 
 /* --- CTA --- */
 .cta {
-  display: inline-block; padding: .8rem 1.8rem;
+  display: inline-block; padding: .85rem 2rem;
   font-family: var(--font-title); font-size: .95rem; letter-spacing: .12em;
   text-transform: uppercase; text-decoration: none;
   color: var(--bg); border-radius: 6px;
@@ -62,50 +176,73 @@ h1 { font-size: 2.6rem; line-height: 1.15; margin: .75rem 0; }
 }
 .cta:hover { background: linear-gradient(180deg, #e0b53a, var(--primary-dark)); }
 
+/* ============================================================ */
+/* TRANSIÇÃO — a primeira tela do app surge                     */
+/* ============================================================ */
+.transition {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 2.5rem; padding: 5rem 1.5rem;
+  background:
+    radial-gradient(80% 60% at 50% 0%, rgba(196, 154, 26, .10), transparent 70%),
+    var(--bg);
+}
+.transition .turn {
+  font-family: var(--font-title);
+  font-size: clamp(1.6rem, 5vw, 2.6rem); line-height: 1.25;
+  max-width: 22ch;
+}
+
+/* ============================================================ */
+/* ATO III — O APP (corte seco, fundo limpo)                    */
+/* ============================================================ */
+.app {
+  background: var(--surface);
+  padding: 2rem 0 1rem;
+}
+.app-feature {
+  display: flex; align-items: center; gap: 3rem;
+  max-width: 880px; margin: 0 auto; padding: 3.5rem 1.5rem;
+}
+.app-feature.reverse { flex-direction: row-reverse; }
+.app-text h2 { font-size: 1.9rem; margin-bottom: .75rem; color: var(--primary); }
+.app-text p { color: var(--text-sub); max-width: 30rem; }
+.badge-note {
+  margin-top: 1rem; font-style: italic;
+  color: var(--copper);
+}
+
 /* --- phone frame (pure CSS) --- */
 .phone {
   flex-shrink: 0; width: 250px; padding: 10px;
-  background: var(--surface);
+  background: var(--bg);
   border: 1px solid var(--secondary); border-radius: 28px;
 }
 .phone img { display: block; width: 100%; height: auto; border-radius: 18px; }
-.phone.glow, .feature .phone {
-  /* amber backlight: cachaça against the light */
-  box-shadow: 0 0 48px rgba(196, 154, 26, .18);
+.phone.glow {
+  box-shadow: 0 0 48px rgba(196, 154, 26, .22);
   border-color: rgba(196, 154, 26, .45);
 }
 
-/* --- barrel hoop divider --- */
-.hoop {
-  max-width: 720px; margin: 0 auto; height: 7px; position: relative;
-  border-top: 1px solid var(--secondary);
-  border-bottom: 1px solid var(--secondary);
-}
-.hoop::before, .hoop::after {
-  content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-  width: 5px; height: 5px; border-radius: 50%; background: var(--primary);
-}
-.hoop::before { left: 18%; }
-.hoop::after { right: 18%; }
+/* par de telas na transição (check-in + perfil) */
+.phone-pair { display: flex; gap: 1.5rem; justify-content: center; align-items: flex-start; }
 
-/* --- features (zigzag) --- */
-.feature {
-  display: flex; align-items: center; gap: 3rem;
-  max-width: 880px; margin: 0 auto; padding: 4rem 1.5rem;
-}
-.feature.reverse { flex-direction: row-reverse; }
-.feature-text h2 { font-size: 1.9rem; margin-bottom: .75rem; color: var(--primary); }
-.feature-text p { color: var(--text-sub); max-width: 30rem; }
-
-/* --- waitlist --- */
+/* ============================================================ */
+/* ATO IV — WAITLIST                                            */
+/* ============================================================ */
 .waitlist {
-  max-width: 640px; margin: 0 auto; padding: 4rem 1.5rem; text-align: center;
+  max-width: 640px; margin: 0 auto; padding: 4.5rem 1.5rem 4rem; text-align: center;
 }
 .waitlist h2 { font-size: 1.9rem; margin-bottom: 1.5rem; }
 .waitlist iframe { border: 0; }
+.founder-note {
+  font-family: var(--font-title); font-size: .9rem; letter-spacing: .04em;
+  color: var(--primary); margin-top: 1rem;
+}
 .privacy-note { font-size: .9rem; color: var(--text-sub); margin-top: .75rem; }
 
-/* --- institutional --- */
+/* ============================================================ */
+/* ATO V — INSTITUCIONAL + RODAPÉ                               */
+/* ============================================================ */
 .institutional {
   max-width: 640px; margin: 0 auto; padding: 3.5rem 1.5rem; text-align: center;
 }
@@ -115,7 +252,6 @@ h1 { font-size: 2.6rem; line-height: 1.15; margin: .75rem 0; }
 }
 .institutional p { color: var(--text-sub); }
 
-/* --- footer --- */
 footer {
   border-top: 1px solid var(--secondary);
   padding: 2.5rem 1.5rem; text-align: center;
@@ -123,17 +259,76 @@ footer {
 }
 footer nav { margin-bottom: 1rem; }
 footer nav a { margin: 0 .5rem; }
+.social { margin-bottom: 1.25rem; }
+.social a {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--font-title); letter-spacing: .05em;
+  color: var(--primary); text-decoration: none;
+}
+.social a:hover { color: #e8c25c; }
+.social svg { display: block; }
 .legal-notice { margin-bottom: .5rem; }
 .copyright { font-family: var(--font-title); font-size: .8rem; letter-spacing: .15em; }
 
-/* --- mobile (primary audience: Instagram/WhatsApp traffic) --- */
+/* fundo de barril sob todo o bloco final (waitlist + institucional + rodapé):
+   fecha o arco visual campo -> barril. Still (leve), com scrim forte pra legibilidade. */
+.finale { position: relative; }
+.finale-media {
+  position: absolute; inset: 0; z-index: 0;
+  background: center / cover no-repeat url('assets/barril.jpg');
+}
+.finale-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg,
+    rgba(14, 7, 2, .84) 0%, rgba(14, 7, 2, .74) 45%, rgba(14, 7, 2, .92) 100%);
+}
+.finale > .waitlist,
+.finale > .institutional,
+.finale > footer { position: relative; z-index: 2; }
+.finale > footer { background: transparent; }
+
+/* ============================================================ */
+/* MOBILE (público primário: tráfego de Instagram/WhatsApp)     */
+/* ============================================================ */
 @media (max-width: 760px) {
-  .hero, .feature, .feature.reverse {
+  .cinema-media { background-image: var(--poster-p, var(--poster-l, none)); }
+  .glass-layer { background-image: var(--img-p, var(--img-l)); }
+
+  /* retrato: o texto do alambique vai ao rodapé, centralizado (igual aos copos) */
+  .cinema.aside-left { justify-content: center; align-items: flex-end; }
+  .cinema.aside-left .cinema-content {
+    max-width: 100%; text-align: center;
+    margin-left: 0; margin-bottom: 8vh;
+  }
+
+  /* retrato não tem "lado" livre: o copo ocupa o centro, ambos vão ao rodapé */
+  .glass-sticky .hook {
+    left: 1.25rem; right: 1.25rem; width: auto;
+    top: auto; bottom: 8vh; transform: none;
+    text-align: center;
+  }
+
+  .finale-media { background-image: url('assets/barril-9x16.jpg'); }
+
+  .app-feature, .app-feature.reverse {
     flex-direction: column; text-align: center;
     padding-top: 3rem; padding-bottom: 3rem;
   }
-  h1 { font-size: 2rem; }
-  .lead, .feature-text p { margin-left: auto; margin-right: auto; }
+  .app-text p, .badge-note { margin-left: auto; margin-right: auto; }
   .phone { width: 210px; }
-  .hoop { max-width: 82vw; }
+
+  /* par de telas: encolhe pra caber lado a lado no retrato */
+  .phone-pair { gap: .7rem; }
+  .phone-pair .phone { width: 43vw; padding: 6px; }
+}
+
+/* ============================================================ */
+/* MOVIMENTO REDUZIDO — sem vídeo, sem Ken Burns, sem cue        */
+/* ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-cue::before { animation: none; }
+  /* sem o scroll longo da cena do copo: uma tela só, estado cheio, sem crossfade */
+  .glass-scene.is-enhanced { height: auto; }
+  .glass-scene.is-enhanced .glass-sticky { position: relative; height: auto; }
 }
