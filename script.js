@@ -17,7 +17,8 @@
     // API ausente (Safari/iOS): permite — confiamos no lazy-load + reduced-motion.
     if (!c) return true;
     if (c.saveData) return false;
-    if (c.effectiveType && /(^|\b)(slow-2g|2g|3g)\b/.test(c.effectiveType)) return false;
+    // bloqueia só conexões muito lentas; 3g já aguenta os vídeos leves (200-560KB)
+    if (c.effectiveType && /(^|\b)(slow-2g|2g)\b/.test(c.effectiveType)) return false;
     return true;
   }
 

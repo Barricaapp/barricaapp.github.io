@@ -294,11 +294,11 @@ footer nav a { margin: 0 .5rem; }
   .cinema-media { background-image: var(--poster-p, var(--poster-l, none)); }
   .glass-layer { background-image: var(--img-p, var(--img-l)); }
 
-  /* retrato: o texto do alambique vai ao rodapé, centralizado (igual aos copos) */
-  .cinema.aside-left { justify-content: center; align-items: flex-end; }
+  /* retrato: o texto do alambique vai pro topo (sobre a parede/vapor), sem tampar o cobre */
+  .cinema.aside-left { justify-content: center; align-items: flex-start; }
   .cinema.aside-left .cinema-content {
     max-width: 100%; text-align: center;
-    margin-left: 0; margin-bottom: 8vh;
+    margin-left: 0; margin-top: 7vh;
   }
 
   /* retrato não tem "lado" livre: o copo ocupa o centro, ambos vão ao rodapé */
