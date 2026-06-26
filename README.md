@@ -43,15 +43,30 @@ estrutura, o CSS e o JS já funcionam.
 (um por vez), respeita `prefers-reduced-motion` e a Network Information API
 (save-data / 2g-3g → fica na still). Sem a API (Safari/iOS), cai no lazy-load.
 
-## Troca de fase (waitlist → download)
+## Fases de loja (estado atual: lançamento dividido iOS/Android)
+
+iOS **publicado** na App Store (26/jun/2026); Android ainda em closed testing
+(alvo ~jul/2026). A página está em estado **híbrido**:
+
+- **iOS:** badge oficial "Baixar na App Store" (`assets/appstore-ptbr.svg`)
+  no hero e na seção waitlist, apontando para
+  `https://apps.apple.com/app/id6781766987`.
+- **Android:** o formulário Tally segue ativo como lista de espera Android.
+
+Badges oficiais ficam locais em `assets/` (sem depender de endpoint externo):
+`appstore-ptbr.svg` (Apple, preto, PT-BR) e `googleplay-ptbr.png` (Google, PT-BR,
+já baixado para o swap futuro).
 
 No `index.html` há blocos demarcados:
 
-    <!-- PHASE: waitlist (active) -->  ... formulário Tally ...
-    <!-- PHASE: download (commented, enable at launch) -->
+    <!-- PHASE: launch — iOS ao vivo · Android em lista de espera -->  ... badge App Store ...
+    <!-- PHASE: waitlist — Android (ativo até o lançamento na Play Store) -->  ... Tally ...
+    <!-- PHASE: download — Google Play (descomentar no lançamento Android) -->
 
-No launch: comentar os blocos `waitlist`, descomentar os blocos `download`
-e preencher o href do badge com a URL da Play Store.
+**No lançamento Android:** descomentar o bloco `download`, trocar `URL_PLAY_STORE`
+pelo link real da Play Store e remover/encerrar o bloco `waitlist` do Android.
+Conferir visualmente o `googleplay-ptbr.png` antes (baixado do endpoint pt-BR do
+Google, ainda não inspecionado renderizado).
 
 ## Publicação
 
