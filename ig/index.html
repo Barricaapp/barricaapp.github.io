@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Barrica</title>
+  <link rel="canonical" href="https://barricaapp.github.io/">
+  <!-- Atalho de bio do Instagram. Redireciona pra landing ja carregando o UTM
+       do canal (source=instagram, medium=bio). O PostHog da landing captura o
+       utm_* no pageview da raiz; esta pagina NAO carrega PostHog, pra nao gerar
+       pageview lixo. location.replace nao empilha historico (back volta ao IG). -->
+  <meta http-equiv="refresh" content="0; url=/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=launch-jul26">
+  <script>
+    location.replace('/?utm_source=instagram&utm_medium=bio&utm_campaign=launch-jul26');
+  </script>
+</head>
+<body>
+  <p style="font-family: system-ui, sans-serif; text-align: center; margin-top: 20vh; color: #555;">
+    Redirecionando para o Barrica&hellip;
+    <br>
+    <a href="/?utm_source=instagram&amp;utm_medium=bio&amp;utm_campaign=launch-jul26">Continuar</a>
+  </p>
+</body>
+</html>
