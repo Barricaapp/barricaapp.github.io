@@ -176,8 +176,15 @@ a { color: var(--primary); }
 }
 .cta:hover { background: linear-gradient(180deg, #e0b53a, var(--primary-dark)); }
 
-/* --- store badges (App Store ao vivo · Google Play em breve) --- */
-.store-cta { display: flex; flex-direction: column; align-items: center; gap: .9rem; }
+/* --- store badges (App Store e Google Play, as duas ao vivo) --- */
+.store-cta {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: .9rem 1.1rem;
+}
+.store-badges {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 1rem 1.2rem; margin-bottom: .5rem;
+}
 .store-badge {
   display: inline-block; line-height: 0; border-radius: 9px;
   box-shadow: 0 0 28px rgba(196, 154, 26, .22);
@@ -187,12 +194,10 @@ a { color: var(--primary); }
 .store-badge img { display: block; width: 170px; height: auto; }
 .store-badge-lg { margin: 0 auto; }
 .store-badge-lg img { width: 200px; }
-.store-alt {
-  font-family: var(--font-body); font-size: .98rem; color: var(--text);
-  opacity: .82; text-decoration: underline; text-underline-offset: 3px;
-}
-.store-alt:hover { opacity: 1; }
-.android-cue { color: var(--text-sub); margin: .25rem auto 1.4rem; max-width: 26rem; }
+/* O SVG da Apple e o PNG do Google tem margens internas diferentes: largura igual
+   deixa o badge do Play parecer menor. Estes valores igualam o peso visual. */
+.store-badge-play img { width: 190px; }
+.store-badge-lg.store-badge-play img { width: 224px; }
 
 /* ============================================================ */
 /* TRANSIÇÃO — a primeira tela do app surge                     */
@@ -245,18 +250,16 @@ a { color: var(--primary); }
 .phone-pair { display: flex; gap: 1.5rem; justify-content: center; align-items: flex-start; }
 
 /* ============================================================ */
-/* ATO IV — WAITLIST                                            */
+/* ATO IV — DOWNLOAD                                            */
 /* ============================================================ */
-.waitlist {
+.download {
   max-width: 640px; margin: 0 auto; padding: 4.5rem 1.5rem 4rem; text-align: center;
 }
-.waitlist h2 { font-size: 1.9rem; margin-bottom: 1.5rem; }
-.waitlist iframe { border: 0; }
+.download h2 { font-size: 1.9rem; margin-bottom: 1.5rem; }
 .founder-note {
   font-family: var(--font-title); font-size: .9rem; letter-spacing: .04em;
   color: var(--primary); margin-top: 1rem;
 }
-.privacy-note { font-size: .9rem; color: var(--text-sub); margin-top: .75rem; }
 
 /* ============================================================ */
 /* ATO V — INSTITUCIONAL + RODAPÉ                               */
@@ -288,7 +291,7 @@ footer nav a { margin: 0 .5rem; }
 .legal-notice { margin-bottom: .5rem; }
 .copyright { font-family: var(--font-title); font-size: .8rem; letter-spacing: .15em; }
 
-/* fundo de barril sob todo o bloco final (waitlist + institucional + rodapé):
+/* fundo de barril sob todo o bloco final (download + institucional + rodapé):
    fecha o arco visual campo -> barril. Still (leve), com scrim forte pra legibilidade. */
 .finale { position: relative; }
 .finale-media {
@@ -300,7 +303,7 @@ footer nav a { margin: 0 .5rem; }
   background: linear-gradient(180deg,
     rgba(14, 7, 2, .84) 0%, rgba(14, 7, 2, .74) 45%, rgba(14, 7, 2, .92) 100%);
 }
-.finale > .waitlist,
+.finale > .download,
 .finale > .institutional,
 .finale > footer { position: relative; z-index: 2; }
 .finale > footer { background: transparent; }

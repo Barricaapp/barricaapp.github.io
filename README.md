@@ -13,7 +13,7 @@ Scrollytelling cinematográfico em 5 atos (ver spec em
 1. Hero (cena campo)
 2. A tese: caráter próprio (alambique) e o copo que esvazia no scroll (apreciador → lacuna, numa cena só)
 3. Transição + o app (corte seco, telas reais)
-4. Waitlist (Tally) + 5. institucional + rodapé — bloco final sobre o barril (still, fecha o arco campo → barril), com Instagram no rodapé
+4. Download (badges das duas lojas) + 5. institucional + rodapé — bloco final sobre o barril (still, fecha o arco campo → barril), com Instagram no rodapé
 
 ## Editar
 
@@ -43,30 +43,46 @@ estrutura, o CSS e o JS já funcionam.
 (um por vez), respeita `prefers-reduced-motion` e a Network Information API
 (save-data / 2g-3g → fica na still). Sem a API (Safari/iOS), cai no lazy-load.
 
-## Fases de loja (estado atual: lançamento dividido iOS/Android)
+## Fases de loja (estado atual: as duas lojas ao vivo)
 
-iOS **publicado** na App Store (26/jun/2026); Android ainda em closed testing
-(alvo ~jul/2026). A página está em estado **híbrido**:
+**Swap feito em 09/set/2026.** A lista de espera Android saiu da página; os dois
+badges apontam para as fichas públicas:
 
-- **iOS:** badge oficial "Baixar na App Store" (`assets/appstore-ptbr.svg`)
-  no hero e na seção waitlist, apontando para
-  `https://apps.apple.com/app/id6781766987`.
-- **Android:** o formulário Tally segue ativo como lista de espera Android.
+| Loja | Link | Estado |
+|---|---|---|
+| App Store | `https://apps.apple.com/app/id6781766987` | publicada em 26/jun/2026 |
+| Google Play | `https://play.google.com/store/apps/details?id=com.barrica.app` | ficha pública, versão 1.21.0, atualizada em 05/set/2026 |
 
 Badges oficiais ficam locais em `assets/` (sem depender de endpoint externo):
-`appstore-ptbr.svg` (Apple, preto, PT-BR) e `googleplay-ptbr.png` (Google, PT-BR,
-já baixado para o swap futuro).
+`appstore-ptbr.svg` (Apple, preto, PT-BR) e `googleplay-ptbr.png` (Google, PT-BR).
+Os dois assets têm margens internas diferentes, então largura igual deixa o do
+Play parecer menor: `.store-badge-play` compensa isso no `style.css`.
 
-No `index.html` há blocos demarcados:
+No `index.html` sobrou um bloco demarcado só, `<!-- PHASE: download -->`, no hero.
+A seção do Ato IV virou `<section class="download">`, e o `id="lista"` foi
+**mantido de propósito**: peças já publicadas (bio do Instagram, WhatsApp)
+apontam para `#lista`.
 
-    <!-- PHASE: launch — iOS ao vivo · Android em lista de espera -->  ... badge App Store ...
-    <!-- PHASE: waitlist — Android (ativo até o lançamento na Play Store) -->  ... Tally ...
-    <!-- PHASE: download — Google Play (descomentar no lançamento Android) -->
+### O que saiu, e o que fazer se voltar
 
-**No lançamento Android:** descomentar o bloco `download`, trocar `URL_PLAY_STORE`
-pelo link real da Play Store e remover/encerrar o bloco `waitlist` do Android.
-Conferir visualmente o `googleplay-ptbr.png` antes (baixado do endpoint pt-BR do
-Google, ainda não inspecionado renderizado).
+- **Formulário Tally** (`EkaKOB`, lista de espera Android): removido do HTML, junto
+  com o ramo do script inline que injetava UTM no iframe. O formulário segue
+  existindo no Tally; se algum dia voltar, o ramo precisa voltar também.
+- **Regras de CSS órfãs** removidas no mesmo commit: `.store-alt`, `.android-cue`,
+  `.waitlist iframe` e `.privacy-note` (esta última só servia ao formulário; o link
+  da Política de Privacidade continua no rodapé).
+
+### UTM e Install Referrer
+
+O link do Google Play carrega `data-play`, e o script inline põe o UTM **dentro** do
+parâmetro `referrer` (formato do Install Referrer). Sem esse atributo o UTM não
+viaja para a Play: o bloco pré-escrito da fase anterior não o tinha.
+
+### Promessa datada na página
+
+A linha "Os 100 primeiros usuários ganham o selo de Membro Fundador" corresponde ao
+troféu `Membro Fundador` (condição `primeiros_100_usuarios`), ativo em produção.
+**Remover a linha quando o app passar de 100 usuários.**
 
 ## Publicação
 
