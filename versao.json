@@ -1,5 +1,5 @@
 {
   "manutencao": { "ativa": false },
-  "ios": { "min": "1.0", "disponivel": "1.0" },
-  "android": { "min": "1.0.0", "disponivel": "1.0.0" }
+  "ios": { "min": "1.32", "disponivel": "1.32" },
+  "android": { "min": "1.32.0", "disponivel": "1.32.0" }
 }
